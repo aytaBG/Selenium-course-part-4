@@ -30,7 +30,6 @@ def browser(request):
         options.add_experimental_option('prefs', {'intl.accept_languages': user_language})
         print('\nStarting Chrome for test..')
         open_browser = webdriver.Chrome(options=options)
-        open_browser.implicitly_wait(10)
 
     #открытие Firefox
     elif browser_name == 'Firefox':
@@ -38,7 +37,6 @@ def browser(request):
         options.set_preference('intl.accept_languages', user_language)
         print('\nStarting Firefox for test ..')
         open_browser = webdriver.Firefox(options=options)
-        open_browser.implicitly_wait(10)
 
     #ошибка при неправильном названиии браузера
     else:
