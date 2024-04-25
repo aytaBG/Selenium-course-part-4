@@ -1,3 +1,5 @@
+from Tests.pages.login_page import LoginPage
+
 from .pages.product_page import ProductPage
 from .pages.locators import ProductPageLocators, Links
 import pytest
@@ -48,3 +50,24 @@ def test_message_disappeared_after_adding_product_to_basket(browser):
     page.open()
     page.add_item_to_basket()
     page.did_success_message_dissapear()
+
+@pytest.mark.product
+def test_guest_should_see_login_link_on_product_page(browser):
+    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+    page = ProductPage(browser, link)
+    page.open()
+    page.should_be_login_link()
+
+@pytest.mark.product
+def test_guest_can_go_to_login_page_from_product_page(browser):
+    # создаём объект класса ProductPage и открываем в нём ссылку
+    page = ProductPage(browser, link)
+    page.open()
+    # переход на страницу логина
+    page.go_to_login_page()
+    # создаём объект LoginPage и передаём в него текущее окно и ссылку
+    # необходимо сменить объект с ProductPage на LoginPage так как метод
+    # should_be_login_page принадлежит классу LoginPage
+    login_page = LoginPage(browser, browser.current_url)
+    # проверяем правильная ли открылась страница
+    login_page.should_be_login_page()

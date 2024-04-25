@@ -58,7 +58,7 @@ class ProductPage(BasePage):
             basket_price = self.browser.find_element(*ProductPageLocators.BASKET_PRICE).text
         except:
             print('Нет ценника в корзине')
-        assert self.price == basket_price,\
+        assert self.price == basket_price, \
             f'Цена в корзине ({basket_price}) не совпадает с ценой товара ({self.price})'
         print(f'Цена в корзине равна {basket_price}')
 
@@ -67,7 +67,7 @@ class ProductPage(BasePage):
             basket_item = self.browser.find_element(*ProductPageLocators.BASKET_ITEM).text
         except:
             print('Нет товара в корзине')
-        assert self.item == basket_item,\
+        assert self.item == basket_item, \
             f'Товар в корзине ({basket_item}) не совпадает с выбранным ({self.item})'
         print(f'Товар в корзине : {basket_item}')
 
@@ -76,7 +76,5 @@ class ProductPage(BasePage):
             'Сообщение о добавлении предмета присутствует'
 
     def did_success_message_dissapear(self):
-        assert  self.is_disappeared(*ProductPageLocators.BASKET_ITEM), \
+        assert self.is_disappeared(*ProductPageLocators.BASKET_ITEM), \
             'Сооьщение о добавлении предмета не исчезло'
-
-
