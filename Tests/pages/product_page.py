@@ -4,7 +4,9 @@ from selenium.common.exceptions import NoAlertPresentException, NoSuchElementExc
 import math
 
 
+# Page Object страницы товара
 class ProductPage(BasePage):
+    # добавляем аттрибуты цены и названия товара
     def __init__(self, browser, url, timeout=10):
         super().__init__(browser, url, timeout)
         self.item = ''
@@ -38,42 +40,49 @@ class ProductPage(BasePage):
         add_to_basket = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET)
         add_to_basket.click()
 
+    # задаём цену и названия товара
     def save_item_and_price(self):
-        try:
-            self.item = self.browser.find_element(*ProductPageLocators.ITEM).text
-        except NoSuchElementException:
-            print('Отсутствует название товара')
-        else:
-            print(f'Название товара {self.item}')
-        try:
-            self.price = self.browser.find_element(*ProductPageLocators.PRICE).text
-        except NoSuchElementException:
-            print('Отсутствует цена товара')
-        else:
-            print(f'Цена товара {self.price}')
+        # проверяем наличие названия
+        assert self.is_element_present(*ProductPageLocators.ITEM), \
+            'Отсутствует название товара'
+        # сохраняем название и выводим его в косоль
+        self.item = self.browser.find_element(*ProductPageLocators.ITEM).text
+        print(f'Название товара {self.item}')
+        # проверяем наличие цены
+        assert self.is_element_present(*ProductPageLocators.PRICE), \
+            'Отсутствует цена товара'
+        # сохраняем цену и выводим её в консоль
+        self.price = self.browser.find_element(*ProductPageLocators.PRICE).text
+        print(f'Цена товара {self.price}')
 
+    # сравниваем цену товара и в корзине
     def check_price(self):
-        try:
-            basket_price = self.browser.find_element(*ProductPageLocators.BASKET_PRICE).text
-        except NoSuchElementException:
-            print('Нет ценника в корзине')
+        # проверяем наличие цены в корзине
+        assert self.is_element_present(*ProductPageLocators.BASKET_PRICE), \
+            'Нет ценника в корзине'
+        # задаём цену в корзине и сравниваем с ценой товара
+        basket_price = self.browser.find_element(*ProductPageLocators.BASKET_PRICE).text
         assert self.price == basket_price, \
             f'Цена в корзине ({basket_price}) не совпадает с ценой товара ({self.price})'
         print(f'Цена в корзине равна {basket_price}')
 
+    # сравниваем название товара и в корзине
     def check_item(self):
-        try:
-            basket_item = self.browser.find_element(*ProductPageLocators.BASKET_ITEM).text
-        except NoSuchElementException:
-            print('Нет товара в корзине')
+        # проверяем наличие товара в корзине
+        assert self.is_element_present(*ProductPageLocators.BASKET_ITEM), \
+            'Нет ценника в корзине'
+        # задаём название товара в корзине и сравниваем с нашим товаром
+        basket_item = self.browser.find_element(*ProductPageLocators.BASKET_ITEM).text
         assert self.item == basket_item, \
             f'Товар в корзине ({basket_item}) не совпадает с выбранным ({self.item})'
         print(f'Товар в корзине : {basket_item}')
 
+    # проверка отсутствия сообщения о добавлении товара в корзину
     def is_there_not_a_success_message(self):
         assert self.is_not_element_present(*ProductPageLocators.BASKET_ITEM), \
             'Сообщение о добавлении предмета присутствует'
 
+    # проверка исчезновения сообщения о добавлении товара в корзину
     def did_success_message_dissapear(self):
         assert self.is_disappeared(*ProductPageLocators.BASKET_ITEM), \
             'Сооьщение о добавлении предмета не исчезло'

@@ -4,6 +4,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
+# базовый Page Object
 class BasePage:
     # инициализация объекта
     def __init__(self, browser, url, timeout=10):
@@ -17,10 +18,13 @@ class BasePage:
 
     # переход на страницу логина
     def go_to_login_page(self):
+        # находим кнопку перехода на страницу логина и нажимаем на неё
         login_link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         login_link.click()
 
+    # переход в корзину
     def go_to_basket(self):
+        # находим кнопку корзины и нажимаем на неё
         basket = self.browser.find_element(*BasePageLocators.BASKET_PAGE)
         basket.click()
 
@@ -41,6 +45,7 @@ class BasePage:
             return False
         return True
 
+    # проверка отсутствия элемента
     def is_not_element_present(self, how, what, timeout=4):
         try:
             WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((how, what)))
@@ -49,6 +54,7 @@ class BasePage:
 
         return False
 
+    # проверка исчезновения элемента
     def is_disappeared(self, how, what, timeout=4):
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException). \
@@ -58,6 +64,7 @@ class BasePage:
 
         return True
 
+    # проверка залогиненности
     def should_be_authorized_user(self):
         assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
                                                                      " probably unauthorised user"
