@@ -3,9 +3,35 @@ from Tests.pages.login_page import LoginPage
 from .pages.product_page import ProductPage
 from .pages.locators import Links
 import pytest
+import time
 
 link = Links.PRODUCT3
 
+@pytest.mark.new
+@pytest.mark.product
+class TestUserAddToBasketFromProductPage:
+    @pytest.fixture(scope='function', autouse=True)
+    def setup(self, browser):
+        link = Links.LOGIN_PAGE
+        password = str(time.time())
+        email = password + "@fakemail.org"
+        page = LoginPage(browser, link)
+        page.open()
+        page.register_new_user(email, password)
+        page.should_be_authorized_user()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        page = ProductPage(browser, link)
+        page.open()
+        page.save_item_and_price()
+        page.add_item_to_basket()
+        page.check_price()
+        page.check_item()
+
+    def test_user_cant_see_success_message(self, browser):
+        page = ProductPage(browser, link, timeout=0)
+        page.open()
+        page.is_there_not_a_success_message()
 
 # тест на добавление товара в корзину
 @pytest.mark.skip
