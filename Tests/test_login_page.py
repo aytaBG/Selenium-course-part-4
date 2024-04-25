@@ -1,6 +1,6 @@
 import pytest
-from .pages.login_page import LoginPage
-from .pages.locators import Links
+from Tests.pages.login_page import LoginPage
+from Tests.pages.locators import Links
 
 link = Links.LOGIN_PAGE
 

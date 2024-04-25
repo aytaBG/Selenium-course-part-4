@@ -19,6 +19,7 @@ class LoginPageLocators:
     REGISTER_CONFIRM_PASSWORD = (By.ID, 'id_registration-password2')
     RIGISTER_BUTTON = (By.NAME, 'registration_submit')
 
+
 class ProductPageLocators:
     ADD_TO_BASKET = (By.CLASS_NAME, 'btn-add-to-basket')
     ITEM = (By.CSS_SELECTOR, '.product_main > h1')

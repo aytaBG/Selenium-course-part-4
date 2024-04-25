@@ -4,47 +4,47 @@ from selenium.webdriver.firefox.options import Options as options_firefox
 import pytest
 
 
-#дополнительные параметры для pytest
+# дополнительные параметры для pytest
 def pytest_addoption(parser):
 
-    #параметр для выбора браузера
+    # параметр для выбора браузера
     parser.addoption('--browser_name', action='store', default='Chrome',
                      help='Choose browser: Chrome or Firefox')
 
-    #параметр для выбора языка
+    # параметр для выбора языка
     parser.addoption('--language', action='store', default='ru',
                      help='Choose language: ru, en, etc.')
 
 
-#открытие нужного браузера и выбор языка
+# открытие нужного браузера и выбор языка
 @pytest.fixture()
 def browser(request):
 
-    #приём языка и браузера из параметров
+    # приём языка и браузера из параметров
     user_language = request.config.getoption('language')
     browser_name = request.config.getoption('browser_name')
 
-    #открытие Chrome
+    # открытие Chrome
     if browser_name == 'Chrome':
         options = options_chrome()
         options.add_experimental_option('prefs', {'intl.accept_languages': user_language})
         print('\nStarting Chrome for test..')
         open_browser = webdriver.Chrome(options=options)
 
-    #открытие Firefox
+    # открытие Firefox
     elif browser_name == 'Firefox':
         options = options_firefox()
         options.set_preference('intl.accept_languages', user_language)
         print('\nStarting Firefox for test ..')
         open_browser = webdriver.Firefox(options=options)
 
-    #ошибка при неправильном названиии браузера
+    # ошибка при неправильном названиии браузера
     else:
         raise pytest.UsageError('--browser_name should be Chrome or Firefox')
 
-    #передача браузера в тест
+    # передача браузера в тест
     yield open_browser
 
-    #закрытие браузера
+    # закрытие браузера
     print('\nClosing browser after test')
     open_browser.quit()

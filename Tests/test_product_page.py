@@ -1,13 +1,13 @@
 from Tests.pages.basket_page import BasketPage
 from Tests.pages.login_page import LoginPage
-from .pages.product_page import ProductPage
-from .pages.locators import Links
+from Tests.pages.product_page import ProductPage
+from Tests.pages.locators import Links
 import pytest
 import time
 
 link = Links.PRODUCT3
 
-@pytest.mark.new
+
 @pytest.mark.product
 class TestUserAddToBasketFromProductPage:
     @pytest.fixture(scope='function', autouse=True)
@@ -20,6 +20,7 @@ class TestUserAddToBasketFromProductPage:
         page.register_new_user(email, password)
         page.should_be_authorized_user()
 
+    @pytest.mark.need_review
     def test_user_can_add_product_to_basket(self, browser):
         page = ProductPage(browser, link)
         page.open()
@@ -33,6 +34,7 @@ class TestUserAddToBasketFromProductPage:
         page.open()
         page.is_there_not_a_success_message()
 
+
 # тест на добавление товара в корзину
 @pytest.mark.skip
 @pytest.mark.parametrize('link', ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
@@ -42,18 +44,31 @@ class TestUserAddToBasketFromProductPage:
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer4",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer5",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer6",
-                                  pytest.param("http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer7",
+                                  pytest.param("http://selenium1py.pythonanywhere.com/" +
+                                               "catalogue/coders-at-work_207/?promo=offer7",
                                                marks=pytest.mark.xfail),
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer8",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"])
 @pytest.mark.product
-def test_guest_can_add_product_to_basket(browser,link):
+def test_guest_can_add_product_to_basket_promo(browser, link):
     page = ProductPage(browser, link)
     page.open()
     page.save_item_and_price()
     page.add_item_to_basket_promo()
     page.check_price()
     page.check_item()
+
+
+@pytest.mark.need_review
+@pytest.mark.product
+def test_guest_can_add_product_to_basket(browser):
+    page = ProductPage(browser, link)
+    page.open()
+    page.save_item_and_price()
+    page.add_item_to_basket()
+    page.check_price()
+    page.check_item()
+
 
 @pytest.mark.xfail
 @pytest.mark.product
@@ -63,11 +78,13 @@ def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     page.add_item_to_basket()
     page.is_there_not_a_success_message()
 
+
 @pytest.mark.product
 def test_guest_cant_see_success_message(browser):
     page = ProductPage(browser, link, timeout=0)
     page.open()
     page.is_there_not_a_success_message()
+
 
 @pytest.mark.xfail
 @pytest.mark.product
@@ -77,13 +94,16 @@ def test_message_disappeared_after_adding_product_to_basket(browser):
     page.add_item_to_basket()
     page.did_success_message_dissapear()
 
+
 @pytest.mark.product
 def test_guest_should_see_login_link_on_product_page(browser):
     page = ProductPage(browser, link)
     page.open()
     page.should_be_login_link()
 
+
 @pytest.mark.product
+@pytest.mark.need_review
 def test_guest_can_go_to_login_page_from_product_page(browser):
     # создаём объект класса ProductPage и открываем в нём ссылку
     page = ProductPage(browser, link)
@@ -97,7 +117,9 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     # проверяем правильная ли открылась страница
     login_page.should_be_login_page()
 
+
 @pytest.mark.product
+@pytest.mark.need_review
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     page = ProductPage(browser, link)
     page.open()

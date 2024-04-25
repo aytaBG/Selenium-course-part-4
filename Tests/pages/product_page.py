@@ -2,7 +2,6 @@ from .base_page import BasePage
 from .locators import ProductPageLocators
 from selenium.common.exceptions import NoAlertPresentException, NoSuchElementException
 import math
-import time
 
 
 class ProductPage(BasePage):
@@ -42,13 +41,13 @@ class ProductPage(BasePage):
     def save_item_and_price(self):
         try:
             self.item = self.browser.find_element(*ProductPageLocators.ITEM).text
-        except:
+        except NoSuchElementException:
             print('Отсутствует название товара')
         else:
             print(f'Название товара {self.item}')
         try:
             self.price = self.browser.find_element(*ProductPageLocators.PRICE).text
-        except:
+        except NoSuchElementException:
             print('Отсутствует цена товара')
         else:
             print(f'Цена товара {self.price}')
