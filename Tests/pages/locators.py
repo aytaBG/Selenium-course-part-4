@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 
 class BasePageLocators:
     LOGIN_LINK = (By.CSS_SELECTOR, '#login_link')
+    BASKET_PAGE = (By.CSS_SELECTOR, '.btn-group > .btn-default')
 
 
 class MainPageLocators:
@@ -22,9 +23,15 @@ class ProductPageLocators:
     BASKET_PRICE = (By.CSS_SELECTOR, '#messages p > strong')
 
 
+class BasketPageLocators:
+    BASKET_EMPTY = (By.CSS_SELECTOR, '#content_inner > p')
+    BASKET_ITEMS = (By.CLASS_NAME, 'basket-items')
+
+
 class Links:
     MAIN_PAGE = "http://selenium1py.pythonanywhere.com/"
     LOGIN_PAGE = 'http://selenium1py.pythonanywhere.com/accounts/login/'
     PRODUCT1 = 'http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear'
     PRODUCT2 = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019'
     PRODUCT3 = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
+    BASKET = 'http://selenium1py.pythonanywhere.com/basket/'

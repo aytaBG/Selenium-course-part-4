@@ -15,10 +15,14 @@ class BasePage:
         if timeout != 0:
             self.browser.implicitly_wait(timeout)
 
-        # перейти на страницу логина
+    # переход на страницу логина
     def go_to_login_page(self):
         login_link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         login_link.click()
+
+    def go_to_basket(self):
+        basket = self.browser.find_element(*BasePageLocators.BASKET_PAGE)
+        basket.click()
 
     # проверить, есть ли кнопка перехода на страницу логина
     def should_be_login_link(self):

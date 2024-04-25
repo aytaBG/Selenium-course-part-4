@@ -1,6 +1,6 @@
 from .base_page import BasePage
 from .locators import ProductPageLocators
-from selenium.common.exceptions import NoAlertPresentException
+from selenium.common.exceptions import NoAlertPresentException, NoSuchElementException
 import math
 import time
 
@@ -56,7 +56,7 @@ class ProductPage(BasePage):
     def check_price(self):
         try:
             basket_price = self.browser.find_element(*ProductPageLocators.BASKET_PRICE).text
-        except:
+        except NoSuchElementException:
             print('Нет ценника в корзине')
         assert self.price == basket_price, \
             f'Цена в корзине ({basket_price}) не совпадает с ценой товара ({self.price})'
@@ -65,7 +65,7 @@ class ProductPage(BasePage):
     def check_item(self):
         try:
             basket_item = self.browser.find_element(*ProductPageLocators.BASKET_ITEM).text
-        except:
+        except NoSuchElementException:
             print('Нет товара в корзине')
         assert self.item == basket_item, \
             f'Товар в корзине ({basket_item}) не совпадает с выбранным ({self.item})'
